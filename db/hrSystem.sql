@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS TrainingClasses (
     TrainingClassLength INTEGER
 );
 
-REATE TABLE IF NOT EXISTS Reports (
+CREATE TABLE IF NOT EXISTS Reports (
     ReportID INTEGER PRIMARY KEY AUTOINCREMENT,
     ReportName VARCHAR(50),
     ReportSelectedFields TEXT,
