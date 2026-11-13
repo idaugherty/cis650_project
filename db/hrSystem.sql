@@ -1,49 +1,43 @@
-CREATE TABLE IF NOT EXISTS Role (
-    RoleID INTEGER PRIMARY KEY AUTOINCREMENT,
-    RoleName TEXT NOT NULL,
-);
-
 CREATE TABLE IF NOT EXISTS Employee (
     EmployeeID INTEGER PRIMARY KEY AUTOINCREMENT,
-    EmployeeFirstName VARCHAR(50),
-    EmployeeLastName VARCHAR(50),
-    EmployeeDateOfBirth DATE,
-    EmployeeAddress VARCHAR(255),
-    EmployeeHireDate DATE
-);
-
-CREATE TABLE IF NOT EXISTS TimeOffRequests (
-    TimeOffRequestID INTEGER PRIMARY KEY AUTOINCREMENT,
-    TimeOffRequestDate DATE,
-    Approval Status VARCHAR(50),
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
+    EmployeeFirstName TEXT NOT NULL,
+    EmployeeLastName TEXT NOT NULL,
+    EmployeeDateOfBirth TEXT, --YYYY-MM-DD
+    EmployeeAddress TEXT,
+    EmployeeHireDate TEXT NOT NULL --YYYY-MM-DD
 );
 
 CREATE TABLE IF NOT EXISTS Shift (
     ShiftID INTEGER PRIMARY KEY AUTOINCREMENT,
-    ShiftDayOfTheWeek VARCHAR(9),
-    ShiftStartTime TEXT,
-    ShiftEndTime TEXT,
-    ShiftDate DATE,
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
+    ShiftDay TEXT NOT NULL,
+    ShiftDate TEXT NOT NULL, --YYYY-MM-DD
+    ShiftStartTime TEXT NOT NULL, --HH:MM
+    ShiftEndTime TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS TrainingClasses (
-    TrainingClassID INTEGER PRIMARY KEY AUTOINCREMENT,
-    TrainingClassName VARCHAR(50),
-    TrainingClassDescription VARCHAR(200),
-    TrainingClassLength INTEGER
+CREATE TABLE IF NOT EXISTS WorkRecord (
+    EmployeeID INTEGER NOT NULL,
+    ShiftID INTEGER NOT NULL,
+    ActualStartTime TEXT, --HH:MM
+    ActualEndTime TEXT, --HH:MM
+    HoursWorked REAL,
+    WorkStatus TEXT NOT NULL DEFAULT 'Scheduled',
+    PRIMARY KEY (EmployeeID, ShiftID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID),
+    FOREIGN KEY (ShiftID) REFERENCES Shift(ShiftID),
+    CHECK (HoursWorked IS NULL OR HoursWorked >= 0) 
 );
 
 CREATE TABLE IF NOT EXISTS Reports (
     ReportID INTEGER PRIMARY KEY AUTOINCREMENT,
-    ReportName VARCHAR(50),
+    ReportName TEXT NOT NULL,
+    ReportType TEXT NOT NULL,
+    ReportPeriod TEXT NOT NULL,
+    ReportStartDate TEXT NOT NULL, --YYYY-MM-DD
+    ReportEndDate TEXT NOT NULL, --YYYY-MM-DD
     ReportSelectedFields TEXT,
-    ReportSGenerationTime TEXT,
-    ReportSGenerationTime TEXT,
+    ReportGeneratedTime TEXT NOT NULL, --HH:MM
+    ReportExportTime TEXT, --HH:MM
+    EmployeeID INTEGER NOT NULL,
     FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
 );
-
---UserRole 
---UserTrainingClasses
---Department
